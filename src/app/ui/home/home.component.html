@@ -1,0 +1,18 @@
+  <div class="home rpgui-content framed-golden">
+    <div class="rpgui-container framed">
+      <div *ngIf="!authenticated">
+        <h2>Enter the Dungeon</h2>
+        <section style="padding: 2rem">
+          <button  class="rpgui-button" color="primary" (click)="connectAccount()">Get Started</button>
+        </section>
+      </div>
+      <div *ngIf="authenticated">
+        <h2> Welcome: </h2>
+        <h3>  {{ direction }}</h3>
+        <h3> Balance {{ balance }} ETH</h3>
+        <section style="padding: 2rem">
+          <button  class="rpgui-button" color="primary" (click)="test()">Start Adventure </button>
+        </section>
+      </div>
+    </div>
+  </div>
