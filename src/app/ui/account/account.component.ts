@@ -1,32 +1,34 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Moralis } from 'moralis';
 import {environment} from "src/environments/environment";
 
-export type User = Moralis.User<Moralis.Attributes>;
 
 @Component({
   selector: 'app-account',
   templateUrl: './account.component.html',
   styleUrls: ['./account.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AccountComponent implements OnInit {
-  @Input() user: any;
   CharacterForm: FormGroup | undefined;
+  userData: any
+  showMyProfile: boolean = true;
+  nftsList: any[] = [] ;
 
   constructor(private fb: FormBuilder) {
     Moralis.start({
       appId: environment.appId,
       serverUrl: environment.serverUrl,
-    })
-        .then(() => console.info('Moralis has been initialised.'));
+    }).then(() => console.info('Moralis started.'));
+
+    Moralis.User.currentAsync().then((user) => {
+      this.userData = user 
+      // do stuff with your user
+    });
   }
 
   ngOnInit(): void {
     this.createForm();
-    this.getNfts()
-
   }
 
   createForm(){
@@ -38,28 +40,30 @@ export class AccountComponent implements OnInit {
     });
   }
 
-  async getNfts(){
-    console.log('here');
-    const address = this.user?.attributes?.['ethAddress'];
-    const options = { chain: 'matic', address: address };
+  async getNfts(id: string){
+    const address = this.userData?.attributes?.['ethAddress'];
+    const options = { chain: id, address: address };
     // @ts-ignore
     const polygonNFTs = await Moralis.Web3API.account.getNFTs(options);
     console.log(polygonNFTs);
+
+    this.nftsList = polygonNFTs.result;
   }
 
 
   createCharacter(){
     const character = {
       name: this.CharacterForm?.value.name,
+      ownerAddress: this.userData?.attributes?.['ethAddress'],
       class: this.CharacterForm?.value.class,
       race: this.CharacterForm?.value.race,
       bio: this.CharacterForm?.value.bio,
     }
-    console.log(character)
     const Character = Moralis.Object.extend("Character");
     const Newcharacter = new Character();
 
     Newcharacter.set("name", character.name);
+    Newcharacter.set("ownerAddress", character.ownerAddress);
     Newcharacter.set("class", character.class);
     Newcharacter.set("race", character.race);
     Newcharacter.set("bio", character.bio);
@@ -67,6 +71,7 @@ export class AccountComponent implements OnInit {
     Newcharacter.save().then((Newcharacter:any) => {
       // Execute any logic that should take place after the object is saved.
       alert('New object created with objectId: ' + Newcharacter.id);
+      this.showMyProfile = false;
     }, (error:any) => {
       // Execute any logic that should take place if the save fails.
       // error is a Moralis.Error with an error code and message.

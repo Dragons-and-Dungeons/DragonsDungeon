@@ -13,18 +13,18 @@
       </div>
       <div *ngIf="isLoggedIn" >
         <h2> Welcome: </h2>
-        <h3> {{ username }}</h3>
+        <h2> {{ username }}</h2>
         <h2> Your account dir is :</h2>
-        <h3> {{ ethAddress }} </h3>
-        <h4>Last Login</h4>
-        <h3> {{lastLogin}}</h3>
-        <section style="padding: 2rem">
-          <button  class="rpgui-button" color="primary" [routerLink]="['/account']" (click)="goToAdventure"> Start Adventure </button>
-        </section>
-        <h3 (click)="logout()"> Go Home </h3>
+        <h2> {{ ethAddress }} </h2>
+        <h1>Last Login:</h1>
+        <h2> {{lastLogin}}</h2>
+          <button  class="rpgui-button" color="primary" [routerLink]="['/account']" (click)="goToAdventure"> Create Character </button>
+          <button  class="rpgui-button" color="primary" [routerLink]="['/profile']" (click)="goToAdventure">Go to Profile </button>
+<br><br>
+          <h3 (click)="logout()"> log out </h3>
       </div>
     </div>
   </div>
 <div *ngIf="showCharacterSheet">
-  <app-account [user]="user"></app-account>
+  <app-account></app-account>
 </div>

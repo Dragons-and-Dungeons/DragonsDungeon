@@ -1,31 +1,44 @@
 <div class="profile rpgui-content framed-golden">
     <div class="rpgui-container framed rpgui-center">
-        <h2>Create your character</h2>
-        <br><br>
-        <h1>Select the class</h1>
-        <select class="rpgui-dropdown">
-            <option value="barbarian">Barbarian</option>
-            <option value="human" disabled>Wizard</option>
-        </select>
-        <br><br>
-        <h1>Select the Race</h1>
-        <select class="rpgui-dropdown">
-            <option value="barbarian">Human</option>
-            <option value="human" disabled>Draconian</option>
-        </select>
-        <br><br>
-        <div style="width: 100%">
+    <h1>Your Profile</h1>
+    <p>Update Manage and Change everything related to your account.</p>
+        <h3 [routerLink]="['/home']"> go home</h3>
+    <hr>
 
-            <label style="float:left; width: 13%">Name:</label>
-            <input disabled="" type="text" name="FirstName" value="" placeholder="Gunter">
-            <br><br>
-            <h3> Cosas: {{ this.user | json }}</h3>
-            <label style="float:left; width: 11%">Bio:</label>
-            <textarea disabled="" rows="3" cols="50">Gunter The Destroyer likes to destroy.</textarea>
+    <!-- simple inputs -->
+    <div style="width:42%; float:left;">
+            <h1>About you</h1>
 
-        </div>
-        <hr class="golden">
-        <br><br>
-        <button class="rpgui-button golden" type="button" (click)="getNfts()"><p>Lets Go!</p></button>
+            <button  class="rpgui-button" color="primary"  (click)="getDocs()">get Characters </button>
+
+            <div *ngFor="let character of characterResult">
+{{character |json }}
+                <br><br>
+                <br><br>
+            </div>
     </div>
+
+    <div style="width:42%; float:right;">
+        <h1>Your NFTS</h1>
+        <div class=" framed rpgui-center">
+            <h2>Display your NFT's</h2>
+            <button  class="rpgui-button" color="primary"  (click)="getNfts('matic')">On Polygon </button>
+            <br><br>
+            <button  class="rpgui-button" color="primary"  (click)="getNfts('eth')">On Eth </button>
+            <br><br>
+
+
+            <h2 *ngIf="nftsList.length == 0">You dont have any on this chain</h2>
+            <h2 *ngIf="nftsList.length > 0"> You have this:</h2>
+
+            <div *ngFor="let nft of nftsList">
+                {{ nft.name }}
+                {{ nft.symbol }}
+                {{ nft.name }}
+            </div>
+            <br><br>
+        </div>
+    </div>
+
+</div>
 </div>

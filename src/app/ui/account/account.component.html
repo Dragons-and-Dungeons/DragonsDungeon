@@ -1,8 +1,10 @@
-<form [formGroup]="CharacterForm" (ngSubmit)="createCharacter()">
+<form [formGroup]="CharacterForm" (ngSubmit)="createCharacter()" *ngIf="showMyProfile">
     <div class="account rpgui-content framed-golden">
   <div class="rpgui-container framed rpgui-center">
       <h2>Create your character</h2>
-<br><br>
+      <h3 [routerLink]="['/home']">or go home</h3>
+
+      <br><br>
       <h1>Select the class</h1>
       <select class="rpgui-dropdown" id="class" formControlName="class">
           <option value="select" disabled selected>Select</option>
@@ -32,4 +34,16 @@
   </div>
 </div>
 </form>
+
+
+<div class="account rpgui-content framed-golden" *ngIf="!showMyProfile">
+
+    <div class="rpgui-container framed rpgui-center">
+        <h2>Your character was successfully created</h2>
+
+        <button class="rpgui-button golden"  type="button" (click)="this.showMyProfile = true"><p>Create Another!</p></button>
+    <br><br>
+    <button class="rpgui-button golden" [routerLink]="['/profile']" type="button" ><p>See on profile</p></button>
+    </div>
+</div>
 

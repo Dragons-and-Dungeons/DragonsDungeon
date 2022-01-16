@@ -11,13 +11,15 @@ import { UIRoute } from "./ui.routes";
 import { RouterModule} from "@angular/router";
 import { AccountComponent } from './account/account.component';
 import { ProfileComponent } from './profile/profile.component';
+import { MapComponent } from './map/map.component';
 
 @NgModule({
   declarations: [
     HomeComponent,
     ErrorComponent,
     AccountComponent,
-    ProfileComponent
+    ProfileComponent,
+    MapComponent
   ],
   imports: [
     CommonModule,
