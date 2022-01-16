@@ -1,6 +1,5 @@
 import {Inject, Injectable} from '@angular/core';
 import { WEB3 } from '../../core/web3';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subject } from 'rxjs';
 import Web3 from 'web3';
 import Web3Modal from "web3modal";
@@ -24,7 +23,7 @@ export class ContractService {
   accounts: string[] | undefined;
   balance: string | undefined;
 
-  constructor(@Inject(WEB3) private web3: Web3 ,private snackbar: MatSnackBar) {
+  constructor(@Inject(WEB3) private web3: Web3) {
     const providerOptions = {
       walletconnect: {
         package: WalletConnectProvider, // required
@@ -65,11 +64,9 @@ export class ContractService {
   }
 
   failure(message: string, action: string ) {
-     this.snackbar.open(message, action);
   }
 
   success() {
-    this.snackbar.open('Transaction complete successfully', 'close');
   }
 }
 

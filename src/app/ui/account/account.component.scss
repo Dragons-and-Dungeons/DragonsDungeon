@@ -1,14 +1,10 @@
-.background-image{
-  height: 310px;
-  background-color: rgb(148, 148, 148);
-  background-position: center center;
-  background-size: cover;
+.account{
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.profile-image{
-  width: 146px;
-  height: 146px;
-  border-radius: 78px;
-  border: 3px solid white;
-  background-size: cover;
+
+.item {
+  width: 10em;
 }
