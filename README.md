@@ -1,4 +1,4 @@
-# Angular Self.id Ceramic
+# Angular Dragon Dungeons Explore the dungeon and loot using your nfts
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.0.1.
 

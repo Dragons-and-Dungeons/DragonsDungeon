@@ -1,31 +1,35 @@
-<div class="account rpgui-content framed-golden">
+<form [formGroup]="CharacterForm" (ngSubmit)="createCharacter()">
+    <div class="account rpgui-content framed-golden">
   <div class="rpgui-container framed rpgui-center">
       <h2>Create your character</h2>
 <br><br>
       <h1>Select the class</h1>
-      <select class="rpgui-dropdown">
-          <option value="barbarian">Barbarian</option>
-          <option value="human" disabled>Wizard</option>
+      <select class="rpgui-dropdown" id="class" formControlName="class">
+          <option value="select" disabled selected>Select</option>
+          <option value="barbarian" >Barbarian</option>
+          <option value="wizard" disabled>Wizard</option>
       </select>
       <br><br>
       <h1>Select the Race</h1>
-      <select class="rpgui-dropdown">
-          <option value="barbarian">Human</option>
-          <option value="human" disabled>Draconian</option>
+      <select class="rpgui-dropdown" formControlName="race">
+          <option value="select" disabled selected>Select</option>
+          <option value="human" selected>Human</option>
+          <option value="draconian" disabled>Draconian</option>
       </select>
       <br><br>
       <div style="width: 100%">
 
           <label style="float:left; width: 13%">Name:</label>
-          <input disabled="" type="text" name="FirstName" value="" placeholder="Gunter">
+          <input type="text" name="FirstName" formControlName="name" autocomplete="off" placeholder="Gunter">
           <br><br>
-<h3> Cosas: {{ this.user | json }}</h3>
           <label style="float:left; width: 11%">Bio:</label>
-          <textarea disabled="" rows="3" cols="50">Gunter The Destroyer likes to destroy.</textarea>
+          <textarea type="text" rows="3" cols="50" formControlName="bio" autocomplete="off" placeholder="Gunter The Destroyer likes to destroy."></textarea>
 
       </div>
       <hr class="golden">
       <br><br>
-      <button class="rpgui-button golden" type="button"><p>Lets Go!</p></button>
+      <button class="rpgui-button golden" [disabled]="!CharacterForm.valid" type="button" (click)="createCharacter()"><p>Lets Go!</p></button>
   </div>
 </div>
+</form>
+

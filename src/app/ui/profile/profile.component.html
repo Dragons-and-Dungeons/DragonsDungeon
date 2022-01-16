@@ -1,0 +1,31 @@
+<div class="profile rpgui-content framed-golden">
+    <div class="rpgui-container framed rpgui-center">
+        <h2>Create your character</h2>
+        <br><br>
+        <h1>Select the class</h1>
+        <select class="rpgui-dropdown">
+            <option value="barbarian">Barbarian</option>
+            <option value="human" disabled>Wizard</option>
+        </select>
+        <br><br>
+        <h1>Select the Race</h1>
+        <select class="rpgui-dropdown">
+            <option value="barbarian">Human</option>
+            <option value="human" disabled>Draconian</option>
+        </select>
+        <br><br>
+        <div style="width: 100%">
+
+            <label style="float:left; width: 13%">Name:</label>
+            <input disabled="" type="text" name="FirstName" value="" placeholder="Gunter">
+            <br><br>
+            <h3> Cosas: {{ this.user | json }}</h3>
+            <label style="float:left; width: 11%">Bio:</label>
+            <textarea disabled="" rows="3" cols="50">Gunter The Destroyer likes to destroy.</textarea>
+
+        </div>
+        <hr class="golden">
+        <br><br>
+        <button class="rpgui-button golden" type="button" (click)="getNfts()"><p>Lets Go!</p></button>
+    </div>
+</div>

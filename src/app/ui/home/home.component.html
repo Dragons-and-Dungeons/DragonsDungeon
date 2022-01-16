@@ -4,7 +4,11 @@
         <h2>Enter the Dungeon</h2>
         <h3>Using Moralis and Metamask</h3>
         <section style="padding: 2rem">
-          <button  class="rpgui-button" color="primary" (click)="login()">Get Started</button>
+          <button  class="rpgui-button" color="primary" (click)="login()">Login with Metamask</button>
+          <br><br>
+          <button class="rpgui-button" (click)="login('walletconnect')">
+            Login with WalletConnect
+          </button>
         </section>
       </div>
       <div *ngIf="isLoggedIn" >
