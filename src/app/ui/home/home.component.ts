@@ -1,85 +1,68 @@
-import { Component, OnInit } from '@angular/core';
-import { ContractService } from "./../../services/contract/contract.service";
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { environment } from 'src/environments/environment';
+import { Moralis } from 'moralis';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  direction: any | undefined;
-  balance: string | undefined;
-  profile: any;
-  url: any;
-  data: any;
-  authenticated : boolean = false;
+  public isLoggedIn = false;
+  public ethAddress: string | undefined;
+  public username: string | undefined;
+  public lastLogin: any;
+  user: any;
+  public showCharacterSheet: boolean = false;
 
-  constructor(
-    private contract: ContractService) {
-    this.contract
-      .connectAccount()
-      .then((value: any) => {
-        this.direction = value[0];
-        if (this.direction != undefined || null ){
-          this.authenticated = true;
-        } else {
-          this.authenticated = false;
-        }
-        this.getDetails(this.direction);
-        /* this.profile = this.threebox.getProfile(this.direction).then((response) => {
-             console.log(response);
-             this.profile = response;
-             this.url = this.profile.image[0].contentUrl["/"];
-           }); */
-      })
-      .catch((error: any) => {
-        this.contract.failure(
-          error, 'dismiss'
-        );
-      });
+  constructor(private cdr: ChangeDetectorRef){}
+
+  ngOnInit() {
+    Moralis.start({
+      appId: environment.appId,
+      serverUrl: environment.serverUrl,
+    })
+        .then(() => console.info('Moralis has been initialised.'))
+        .finally(() => this.setLoggedInUser(Moralis.User.current()));
   }
 
-  ngOnInit(): void {
+  login(provider: 'metamask' | 'walletconnect' = 'metamask') {
+    (provider === 'metamask'
+        ? Moralis.Web3.authenticate()
+        : Moralis.Web3.authenticate({ provider }))
+        .then((loggedInUser) => this.setLoggedInUser(loggedInUser))
+        .catch((e) => console.error(`Moralis '${provider}' login error:`, e));
   }
 
-  navigateTo() {
-    window.open("https://metamask.io/");
+  logout() {
+    Moralis.User.logOut()
+        .then((loggedOutUser) => console.info('logout', loggedOutUser))
+        // Set user to undefined
+        .then(() => this.setLoggedInUser(undefined))
+        // Disconnect Web3 wallet
+        .then(() => Moralis.Web3.cleanup())
+        .catch((e) => console.error('Moralis logout error:', e));
   }
 
-  connectAccount() {
-    this.contract
-      .connectAccount()
-      .then((value: any) => {
-        console.log(value[0]);
-        this.direction = value[0];
-        this.getDetails(this.direction);
-      })
-      .catch((error: any) => {
-        this.contract.failure(
-          error, 'dismiss'
-        );
-      });
+  private async setLoggedInUser(loggedInUser?: any) {
+    this.user = await loggedInUser;
+    console.info(this.user);
+    this.username = loggedInUser?.getUsername();
+    this.ethAddress = loggedInUser?.attributes?.['ethAddress']
+    this.lastLogin = loggedInUser?.updatedAt;
+    if (loggedInUser == null || undefined) {
+      this.showCharacterSheet = false;
+      this.isLoggedIn = false;
+    } else {
+      this.isLoggedIn = true;
+    }
+    this.cdr.detectChanges();
   }
 
-  getDetails(account: any[]) {
-    console.log(account)
-    this.contract
-      .accountInfo(account)
-      .then((value: any) => {
-        this.balance = value;
-        console.log(this.balance)
-      })
-      .catch((error: any) => {
-        this.contract.failure(
-          error, 'dismiss'
-        );
-      });
+  goToAdventure(){
+    this.showCharacterSheet = true;
   }
-
-  test(){
-  }
-
-
-
 
 }
+

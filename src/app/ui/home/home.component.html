@@ -1,18 +1,26 @@
-  <div class="home rpgui-content framed-golden">
-    <div class="rpgui-container framed">
-      <div *ngIf="!authenticated">
+  <div class="home rpgui-content framed-golden" *ngIf="!showCharacterSheet">
+    <div class="rpgui-container framed rpgui-center">
+      <div *ngIf="!isLoggedIn">
         <h2>Enter the Dungeon</h2>
+        <h3>Using Moralis and Metamask</h3>
         <section style="padding: 2rem">
-          <button  class="rpgui-button" color="primary" (click)="connectAccount()">Get Started</button>
+          <button  class="rpgui-button" color="primary" (click)="login()">Get Started</button>
         </section>
       </div>
-      <div *ngIf="authenticated">
+      <div *ngIf="isLoggedIn" >
         <h2> Welcome: </h2>
-        <h3>  {{ direction }}</h3>
-        <h3> Balance {{ balance }} ETH</h3>
+        <h3> {{ username }}</h3>
+        <h2> Your account dir is :</h2>
+        <h3> {{ ethAddress }} </h3>
+        <h4>Last Login</h4>
+        <h3> {{lastLogin}}</h3>
         <section style="padding: 2rem">
-          <button  class="rpgui-button" color="primary" (click)="test()">Start Adventure </button>
+          <button  class="rpgui-button" color="primary" [routerLink]="['/account']" (click)="goToAdventure"> Start Adventure </button>
         </section>
+        <h3 (click)="logout()"> Go Home </h3>
       </div>
     </div>
   </div>
+<div *ngIf="showCharacterSheet">
+  <app-account [user]="user"></app-account>
+</div>
